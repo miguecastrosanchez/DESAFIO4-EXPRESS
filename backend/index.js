@@ -18,22 +18,28 @@ app.use(express.json());
 
 
 app.get("/posts", async (req, res) => {
-  
+  try {
     const posts = await obtenerPosts();
-
-  res.json(posts);
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: "Error al obtener los posts",
+    });
+  }
 });
 
 app.post("/posts", async (req, res) => {
-  const { titulo, url, descripcion } = req.body;
-
-  const nuevoPost = await agregarPost(
-    titulo,
-    url,
-    descripcion
-  );
-
-  res.json(nuevoPost);
+  try {
+    const { titulo, url, descripcion } = req.body;
+    const nuevoPost = await agregarPost(titulo, url, descripcion);
+    res.json(nuevoPost);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: "Error al crear el post",
+    });
+  }
 });
 
 app.put("/posts/like/:id", async (req, res) => {

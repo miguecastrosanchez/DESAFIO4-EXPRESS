@@ -61,4 +61,21 @@ const agregarLike = async (id) => {
   return rows[0];
 };
 
-module.exports = { obtenerPosts, agregarPost, agregarLike };
+//funcion para eliminar un post|
+
+const eliminarPost = async (id) => {
+  const consulta = `
+    DELETE FROM posts
+    WHERE id = $1
+    RETURNING *
+  `;
+
+  const valores = [id];
+
+  const { rows } = await pool.query(consulta, valores);
+
+  return rows[0];
+};
+
+
+module.exports = { obtenerPosts, agregarPost, agregarLike, eliminarPost };

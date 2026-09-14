@@ -57,6 +57,30 @@ app.put("/posts/like/:id", async (req, res) => {
   }
 });
 
+app.delete("/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const postEliminado = await eliminarPost(id);
+
+    if (!postEliminado) {
+      return res.status(404).json({
+        mensaje: "Post no encontrado",
+      });
+    }
+
+    res.json({
+      mensaje: "Post eliminado correctamente",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      mensaje: "Error al eliminar el post",
+    });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Servidor encendido en el puerto 3000");
 });

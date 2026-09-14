@@ -6,6 +6,7 @@ const cors = require("cors");
 const {
   obtenerPosts,
   agregarPost,
+  agregarLike,
 } = require("./consultas");
 
 const app = express();
@@ -32,6 +33,28 @@ app.post("/posts", async (req, res) => {
   );
 
   res.json(nuevoPost);
+});
+
+app.put("/posts/like/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const postActualizado = await agregarLike(id);
+
+    if (!postActualizado) {
+      return res.status(404).json({
+        mensaje: "Post no encontrado",
+      });
+    }
+
+    res.json(postActualizado);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      mensaje: "Error al agregar el like",
+    });
+  }
 });
 
 app.listen(3000, () => {

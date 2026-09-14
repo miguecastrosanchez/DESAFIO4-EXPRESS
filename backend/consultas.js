@@ -45,4 +45,20 @@ const agregarPost = async (titulo, url, descripcion) => {
   return rows[0];
 };
 
-module.exports = { obtenerPosts, agregarPost };
+//funcion para agregar likes a un post
+const agregarLike = async (id) => {
+  const consulta = `
+    UPDATE posts
+    SET likes = likes + 1
+    WHERE id = $1
+    RETURNING *
+  `;
+
+  const valores = [id];
+
+  const { rows } = await pool.query(consulta, valores);
+
+  return rows[0];
+};
+
+module.exports = { obtenerPosts, agregarPost, agregarLike };

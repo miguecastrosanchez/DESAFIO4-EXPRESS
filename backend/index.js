@@ -7,6 +7,7 @@ const {
   obtenerPosts,
   agregarPost,
   agregarLike,
+  eliminarPost,
 } = require("./consultas");
 
 const app = express();
